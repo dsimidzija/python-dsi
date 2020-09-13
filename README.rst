@@ -21,7 +21,7 @@ If you're me:
 
     git clone git@github.com-dsimidzija:dsimidzija/python-dsi-utils.git
     cd python-dsi-utils
-    python setup.py develop
+    pip install -e .[develop]
 
 Now you can use:
 

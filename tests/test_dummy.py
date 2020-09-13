@@ -11,6 +11,6 @@ def test_prints_around_pytest_capture():
             "yawn",
             "fart",
             "fart some more",
-        ]
+        ],
     }
     dsi.j(some_dict)

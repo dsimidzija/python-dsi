@@ -2,11 +2,7 @@ from datetime import datetime
 
 import click
 
-from dsi.debug import (
-    dump,
-    dump_error,
-    dump_json,
-)
+from dsi.debug import dump, dump_error, dump_json
 
 
 @click.group()
@@ -16,10 +12,15 @@ def main():
 
 @main.command()
 def self_test():
-    class TestyMcTesticles:
-        pass
+    """Perform minimal self-tests."""
 
-    unused = "one"  # noqa
+    class TestyMcTesticles:
+        def __init__(self, value):
+            self.value = value
+
+        def __repr__(self):
+            return f'{__class__.__name__}("{self.value}")'
+
     debugvar1 = "one"
     debugvar2 = "two"
     debugvar3 = {
@@ -27,7 +28,7 @@ def self_test():
         "nao": datetime.utcnow(),
         "decimal": 3.14,
     }
-    debugvar4 = TestyMcTesticles()
+    debugvar4 = TestyMcTesticles("drink!")
     debugvar5 = {
         "otherdict": {"nested": "dict"},
     }

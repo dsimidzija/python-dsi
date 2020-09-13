@@ -10,6 +10,13 @@ setup(
         "simplejson",
     ],
     extras_require={
-        "dotenv": ["python-dotenv"],
+        "develop": [
+            "black",
+            "isort[pyproject]",
+            "pre-commit",
+            "pylint",
+            "python-dotenv",
+            "toml",
+        ],
     },
 )

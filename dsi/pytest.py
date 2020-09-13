@@ -34,6 +34,6 @@ class DsiUtils:
 
 def pytest_configure(config):
     global capmanager
-    capmanager = config.pluginmanager.getplugin('capturemanager')
+    capmanager = config.pluginmanager.getplugin("capturemanager")
     config._dsi = DsiUtils()
     config.pluginmanager.register(config._dsi)

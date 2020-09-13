@@ -1,0 +1,16 @@
+repos:
+  - repo: https://github.com/PyCQA/pylint
+    rev: '2.6'
+    hooks:
+      - id: pylint
+        additional_dependencies: ["click"]
+  - repo: https://github.com/psf/black
+    rev: stable
+    hooks:
+      - id: black
+        language_version: python3
+  - repo: https://github.com/PyCQA/isort
+    rev: '5.5.2'
+    hooks:
+      - id: isort
+        additional_dependencies: ["toml"]

@@ -1,7 +1,10 @@
+import pytest
+
 import dsi
 
 
-def test_function_call():
+@pytest.mark.asyncio
+async def test_function_call():
     with_some = 5
     params = {"five": "and six"}
     and_var = "varval"
@@ -12,31 +15,36 @@ def test_function_call():
     dsi.d(function_call(with_some, params), "drink", and_var)
 
 
-def test_regular_args_only():
+@pytest.mark.asyncio
+async def test_regular_args_only():
     params = ["arg1", "arg2", "arg3"]
     dsi.d(*params)
 
 
-def test_regular_args_first():
+@pytest.mark.asyncio
+async def test_regular_args_first():
     params = ["arg1", "arg2", "arg3"]
     last = "is last"
     dsi.d(*params, last)
 
 
-def test_regular_args_last():
+@pytest.mark.asyncio
+async def test_regular_args_last():
     one = "is one"
     params = ["arg1", "arg2", "arg3"]
     dsi.d(one, *params)
 
 
-def test_regular_args_mid():
+@pytest.mark.asyncio
+async def test_regular_args_mid():
     one = "is one"
     params = ["arg1", "arg2", "arg3"]
     last = "is last"
     dsi.d(one, *params, last)
 
 
-def test_regular_args_multiple():
+@pytest.mark.asyncio
+async def test_regular_args_multiple():
     one = "is one"
     params = ["arg1", "arg2", "arg3"]
     other_params = ["oth1", "oth2", "oth3"]
@@ -44,7 +52,8 @@ def test_regular_args_multiple():
     dsi.d(one, *params, *other_params, last)
 
 
-def test_function_call_and_args():
+@pytest.mark.asyncio
+async def test_function_call_and_args():
     one = "is one"
     params = ["arg1", "arg2", "arg3"]
     other_params = ["oth1", "oth2", "oth3"]
@@ -58,9 +67,11 @@ def test_function_call_and_args():
     dsi.d(function_call(one, "farg"), *params, "drink", *other_params, last)
 
 
-def test_dict():
+@pytest.mark.asyncio
+async def test_dict():
     dsi.d({"how": "areya", "there": "areyou"}, "okay then")
 
 
-def test_list():
+@pytest.mark.asyncio
+async def test_list():
     dsi.d(["how", "areya", "there", "areyou"], "okay then")

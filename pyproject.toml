@@ -15,3 +15,10 @@ disable = [
     "missing-class-docstring",
     "too-few-public-methods"
 ]
+
+[tool.pytest.ini_options]
+addopts = "--strict-markers"
+markers = [
+    "asyncio",
+    "current",
+]

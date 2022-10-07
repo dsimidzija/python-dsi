@@ -1,3 +1,4 @@
+import asyncio
 import enum
 import inspect
 import os
@@ -54,15 +55,41 @@ def dsi_echo(message, **kwargs):
 
 
 def caller_info(depth: int = 3) -> SimpleNamespace:
-    stack = inspect.stack()
-    args_frame = stack[depth][0]
-    call_frame = stack[depth + 1][0]
+    is_async = False
 
-    calling_line = inspect.getframeinfo(args_frame).code_context[0].strip()
-    line_args_only = ARGS_REGEX.search(calling_line).group("call_args")
-    iterator = iter([line_args_only])
-    tokens = tokenize.generate_tokens(lambda: next(iterator))
-    calling_args = extract_args_from_tokens(tokens)
+    try:
+        current_task = asyncio.current_task()
+        stack = current_task.get_stack()
+        is_async = True
+    except RuntimeError:
+        stack = inspect.stack()
+
+    if is_async:
+        # this is some weird stuff
+        args_frame = stack[-1]
+        call_frame = stack[-1]
+    else:
+        args_frame = stack[depth]
+        call_frame = stack[depth + 1]
+
+    # asyncio.Task.get_stack() and inspect.stack() don't have the same interface for some reason
+    if isinstance(args_frame, inspect.FrameInfo):
+        args_frame = args_frame[0]
+        call_frame = call_frame[0]
+
+    code_context = inspect.getframeinfo(args_frame).code_context
+    if not code_context:
+        calling_args = ["unknown"]
+    else:
+        calling_line = code_context[0].strip()
+        line_match = ARGS_REGEX.search(calling_line)
+        if not line_match:
+            calling_args = []
+        else:
+            line_args_only = line_match.group("call_args")
+            iterator = iter([line_args_only])
+            tokens = tokenize.generate_tokens(lambda: next(iterator))
+            calling_args = extract_args_from_tokens(tokens)
 
     return SimpleNamespace(
         function_name=call_frame.f_code.co_name,
@@ -110,7 +137,7 @@ def extract_args_from_tokens(tokens: typing.List[tokenize.TokenInfo]) -> typing.
 
 
 def json_dumps(obj: typing.Any) -> str:
-    def default_impl(o):
+    def default_impl(o):  # pylint: disable=invalid-name
         if hasattr(o, "isoformat"):
             return o.isoformat()
         raise TypeError()

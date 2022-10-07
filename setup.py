@@ -7,6 +7,7 @@ setup(
         "click",
         "pygments",
         "pytest",
+        "pytest-asyncio",
         "simplejson",
     ],
     extras_require={
